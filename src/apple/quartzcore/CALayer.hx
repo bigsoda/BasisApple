@@ -295,15 +295,15 @@ class CALayer extends AbstractObject
 		return drawsAsynchronously;
 	}
 
-	public var backgroundColor(get_backgroundColor, set_backgroundColor):Dynamic;
-	private function get_backgroundColor():Dynamic
+	public var backgroundColor(get_backgroundColor, set_backgroundColor):Array<Float>;
+	private function get_backgroundColor():Array<Float>
 	{
-		return BasisApplication.instance.objectManager.callInstanceMethod(this, "backgroundColor", [], [], TypeValues.ObjectVal);
+		return BasisApplication.instance.objectManager.callInstanceMethod(this, "backgroundColor", [], [], TypeValues.CGColorRefVal);
 	}
 
-	private function set_backgroundColor(value:Dynamic):Dynamic
+	private function set_backgroundColor(value:Array<Float>):Array<Float>
 	{
-		BasisApplication.instance.objectManager.callInstanceMethod(this, "setBackgroundColor:", [value], [TypeValues.ObjectVal], -1 );
+		BasisApplication.instance.objectManager.callInstanceMethod(this, "setBackgroundColor:", [value], [TypeValues.CGColorRefVal], -1 );
 		return backgroundColor;
 	}
 
@@ -331,15 +331,15 @@ class CALayer extends AbstractObject
 		return borderWidth;
 	}
 
-	public var borderColor(get_borderColor, set_borderColor):Dynamic;
-	private function get_borderColor():Dynamic
+	public var borderColor(get_borderColor, set_borderColor):Array<Float>;
+	private function get_borderColor():Array<Float>
 	{
-		return BasisApplication.instance.objectManager.callInstanceMethod(this, "borderColor", [], [], TypeValues.ObjectVal);
+		return BasisApplication.instance.objectManager.callInstanceMethod(this, "borderColor", [], [], TypeValues.CGColorRefVal);
 	}
 
-	private function set_borderColor(value:Dynamic):Dynamic
+	private function set_borderColor(value:Array<Float>):Array<Float>
 	{
-		BasisApplication.instance.objectManager.callInstanceMethod(this, "setBorderColor:", [value], [TypeValues.ObjectVal], -1 );
+		BasisApplication.instance.objectManager.callInstanceMethod(this, "setBorderColor:", [value], [TypeValues.CGColorRefVal], -1 );
 		return borderColor;
 	}
 
@@ -391,15 +391,15 @@ class CALayer extends AbstractObject
 		return rasterizationScale;
 	}
 
-	public var shadowColor(get_shadowColor, set_shadowColor):Dynamic;
-	private function get_shadowColor():Dynamic
+	public var shadowColor(get_shadowColor, set_shadowColor):Array<Float>;
+	private function get_shadowColor():Array<Float>
 	{
-		return BasisApplication.instance.objectManager.callInstanceMethod(this, "shadowColor", [], [], TypeValues.ObjectVal);
+		return BasisApplication.instance.objectManager.callInstanceMethod(this, "shadowColor", [], [], TypeValues.CGColorRefVal);
 	}
 
-	private function set_shadowColor(value:Dynamic):Dynamic
+	private function set_shadowColor(value:Array<Float>):Array<Float>
 	{
-		BasisApplication.instance.objectManager.callInstanceMethod(this, "setShadowColor:", [value], [TypeValues.ObjectVal], -1 );
+		BasisApplication.instance.objectManager.callInstanceMethod(this, "setShadowColor:", [value], [TypeValues.CGColorRefVal], -1 );
 		return shadowColor;
 	}
 

@@ -288,9 +288,7 @@ namespace basis
 			
 			case CGColorRefVal:
 			{
-				CGColorRef var;
-				[returnVar getValue:&var];
-				return cgColorToArray(var);
+				return cgColorToArray((CGColorRef)returnVar);
 			}
 			break;
 			
@@ -409,7 +407,7 @@ namespace basis
     {
     	NSString *haxeClassName = [[BasisApplication getObjectManager] getHaxeClassName: [NSString stringWithCString:class_getName([object class]) encoding:NSUTF8StringEncoding]];
 		//@ hard fix - fallback if iOS return wrong class name, then use superclass instead.
-		if(haxeClassName == nil || haxeClassName == [NSNull null]) {
+		if(haxeClassName == nil || haxeClassName == (NSString *)[NSNull null]) {
 			haxeClassName = [[BasisApplication getObjectManager] getHaxeClassName: [NSString stringWithCString:class_getName(class_getSuperclass([object class])) encoding:NSUTF8StringEncoding]];
 		}
     	val_call2(_haxeCreateObjectHandler->get(), alloc_string([[ObjectManager getObjectID:object] cStringUsingEncoding:NSUTF8StringEncoding]), alloc_string([haxeClassName cStringUsingEncoding:NSUTF8StringEncoding]));
