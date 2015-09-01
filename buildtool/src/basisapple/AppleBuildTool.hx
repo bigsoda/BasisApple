@@ -377,14 +377,13 @@ class AppleBuildTool extends basis.BuildTool
 					if (deviceTarget.getSetting(AppleTarget.SIMULATOR) == "true")
 					{
 						neko.Lib.println("Running On Simulator...");
-						var launcher:String = libPath + "/bin/ios-sim";
-						Sys.command ("chmod", [ "+x", launcher ]);
-						
-						var family:String = "iphone";
+						var launcher:String = "ios-sim";
+
+						var deviceTypeId:String = "com.apple.CoreSimulator.SimDeviceType.iPhone-6";
 						if(deviceTarget.getSetting(AppleTarget.SIMULATOR_TYPE) == "ipad")
-							family = "ipad";
+							deviceTypeId = "com.apple.CoreSimulator.SimDeviceType.iPad-2";
 						
-							ProcessUtil.runCommand ("", launcher, [ "launch", FileSystem.fullPath (targetPath + "/build/" + configuration + "-iphonesimulator/" + appName + ".app"), "--family", family ] );
+							ProcessUtil.runCommand ("", launcher, [ "launch", FileSystem.fullPath (targetPath + "/build/" + configuration + "-iphonesimulator/" + appName + ".app"), "--devicetypeid", deviceTypeId ] );
 					}
 					else
 					{
