@@ -404,10 +404,14 @@ namespace basis
     }
     DEFINE_PRIM (objectmanager_setDestroyObjectHandler, 1);
     
-    
+
     void objectManagerCreateHaxeObjectHandler(id object)
     {
     	NSString *haxeClassName = [[BasisApplication getObjectManager] getHaxeClassName: [NSString stringWithCString:class_getName([object class]) encoding:NSUTF8StringEncoding]];
+		//@ hard fix - fallback if iOS return wrong class name, then use superclass instead.
+		if(haxeClassName == nil || haxeClassName == [NSNull null]) {
+			haxeClassName = [[BasisApplication getObjectManager] getHaxeClassName: [NSString stringWithCString:class_getName(class_getSuperclass([object class])) encoding:NSUTF8StringEncoding]];
+		}
     	val_call2(_haxeCreateObjectHandler->get(), alloc_string([[ObjectManager getObjectID:object] cStringUsingEncoding:NSUTF8StringEncoding]), alloc_string([haxeClassName cStringUsingEncoding:NSUTF8StringEncoding]));
     }
     

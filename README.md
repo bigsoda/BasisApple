@@ -22,7 +22,12 @@ Installation
 1. Install BasisApple haxelib with instructions found here: https://github.com/Randonee/Basis
 2. Install xcode
 3. Install xcode command line tools
-	
+
+**Rebuilding BasisApple from sources**
+
+* Download sources
+* Call in command line: ant ios install
+
 
 Running the Example
 -------------------
