@@ -12,6 +12,8 @@
 		<framework name="CoreGraphics" />
 		<framework name="QuartzCore" />
 		<target name="ipad">
+			<!--
+			-->
 			<simulator use="true" type="ipad"/>
 			<debug value="true" />
 			<runWhenFinished value="true" />

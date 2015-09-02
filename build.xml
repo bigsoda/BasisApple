@@ -13,6 +13,9 @@
 			<arg line="run hxcpp Build.xml -Diphoneos -DHXCPP_ARMV7" />
 		</exec>
 		<exec dir="extension/project" failonerror="true" executable="haxelib">
+			<arg line="run hxcpp Build.xml -Diphoneos -DHXCPP_ARM64" />
+		</exec>
+		<exec dir="extension/project" failonerror="true" executable="haxelib">
 			<arg line="run hxcpp Build.xml -Diphoneos" />
 		</exec>
 	</target>

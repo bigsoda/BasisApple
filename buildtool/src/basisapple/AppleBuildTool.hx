@@ -111,7 +111,12 @@ class AppleBuildTool extends basis.BuildTool
 			if(osType == IOS_OS())
 			{
 				buildFile.writeString("-D ios\n");
-				buildFile.writeString("-D HXCPP_ARMV7\n");
+
+				if (deviceTarget.getSetting(AppleTarget.SIMULATOR) == "true")
+					buildFile.writeString("-D HXCPP_ARMV7\n");
+				else
+					buildFile.writeString("-D HXCPP_ARM64\n");
+
 				buildFile.writeString("-D " + deviceTarget.getDeviceTypeCompilerArgument() + "\n");
 			}
 			else
@@ -214,15 +219,20 @@ class AppleBuildTool extends basis.BuildTool
 			if(osType == IOS_OS())
 			{
 				args.push("-D" + deviceTarget.getDeviceTypeCompilerArgument());
-				if(deviceTarget.getSetting(AppleTarget.SIMULATOR) != "true")
+				if(deviceTarget.getSetting(AppleTarget.SIMULATOR) == "true")
 				{
 					args.push("-Diphone");
 					args.push("-DHXCPP_ARMV7");
+				}else{
+					args.push("-Diphone");
+					args.push("-DHXCPP_ARM64");
 				}
+
 					
 				
 				basisStartContent = StringTools.replace(basisStartContent, "BASIS_APPLICATION_INCLUDE", "#include <basis/BasisApplication.h>\n#include <basis/ios/IOSApplication.h>");
 				basisStartContent = StringTools.replace(basisStartContent, "BASIS_APPLICATION", "::basis::BasisApplication_obj::init(hx::ClassOf< ::basis::ios::IOSApplication >());");
+				
 			}
 			else if(osType == OSX_OS())
 			{
@@ -254,17 +264,15 @@ class AppleBuildTool extends basis.BuildTool
 				}
 				else
 				{
-					FileUtil.copyInto(haxeBuildPath + "cpp/obj/iphoneos-v7/src/", xcodeBin);
-				
-					File.copy(libPath + "bin/iPhone/libbasisapple.iphoneos-v7.a" , xcodeBin + "/libbasisapple.iphoneos-v7.a");
+					FileUtil.copyInto(haxeBuildPath + "cpp/obj/iphoneos-64/", xcodeBin);
+					File.copy(libPath + "bin/iPhone/libbasisapple.iphoneos-64.a" , xcodeBin + "/libbasisapple.iphoneos-64.a");
 					File.copy(libPath + "bin/iPhone/libbasisapple.iphoneos.a" , xcodeBin + "/libbasisapple.iphoneos.a");
-						
 					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libregexp.iphoneos.a" , xcodeBin + "/hxcpp/libregexp.iphoneos.a");
 					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libstd.iphoneos.a" , xcodeBin + "/hxcpp/libstd.iphoneos.a");
 					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libzlib.iphoneos.a" , xcodeBin + "/hxcpp/libzlib.iphoneos.a");
-					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libregexp.iphoneos-v7.a" , xcodeBin + "/hxcpp/libregexp.iphoneos-v7.a");
-					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libstd.iphoneos-v7.a" , xcodeBin + "/hxcpp/libstd.iphoneos-v7.a");
-					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libzlib.iphoneos-v7.a" , xcodeBin + "/hxcpp/libzlib.iphoneos-v7.a");
+					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libregexp.iphoneos-64.a" , xcodeBin + "/hxcpp/libregexp.iphoneos-64.a");
+					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libstd.iphoneos-64.a" , xcodeBin + "/hxcpp/libstd.iphoneos-64.a");
+					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libzlib.iphoneos-64.a" , xcodeBin + "/hxcpp/libzlib.iphoneos-64.a");
 				}
 				
 			}
@@ -343,6 +351,9 @@ class AppleBuildTool extends basis.BuildTool
 			{
 				xcode.setBuildSetting("VALID_ARCHS", "i386");
 				xcode.setTargetSetting("VALID_ARCHS", "i386");
+			}else{
+				xcode.setBuildSetting("VALID_ARCHS", "arm64");
+				xcode.setTargetSetting("VALID_ARCHS", "arm64");				
 			}
 			
 			for(setting in deviceTarget.xcodeBuildSettings)
@@ -361,7 +372,14 @@ class AppleBuildTool extends basis.BuildTool
 	            commands.push ("i386");
 	            commands.push ("-sdk");
 	            commands.push ("iphonesimulator");
+			} else {
+	            commands.push ("-arch");
+	            commands.push ("arm64");
+	            commands.push ("-sdk");
+	            commands.push ("iphoneos");
 			}
+
+
 			var cleanCommands:Array<String> = commands.copy();
 			cleanCommands.push("clean");
 			ProcessUtil.runCommand(targetPath, "xcodebuild", cleanCommands);
@@ -369,6 +387,9 @@ class AppleBuildTool extends basis.BuildTool
 			ProcessUtil.runCommand(targetPath, "xcodebuild", commands);
 			//------------------------------------
 			
+
+			
+
 			//-------- Run Xcode Project ---------
 			if(deviceTarget.getSetting(Target.RUN_WHEN_FINISHED) == "true")
 			{
@@ -388,9 +409,8 @@ class AppleBuildTool extends basis.BuildTool
 					else
 					{
 						neko.Lib.println("Running On Device...");
-						var launcher:String = libPath + "/bin/fruitstrap/fruitstrap";
-						Sys.command ("chmod", [ "+x", launcher ]);
-						ProcessUtil.runCommand ("", launcher, [ "-d", "-b", FileSystem.fullPath (targetPath + "/build/" + configuration + "-iphoneos/" + appName + ".app") ] );
+						var launcher:String = "ios-deploy";
+						ProcessUtil.runCommand ("", launcher, [ "--debug", "--bundle", FileSystem.fullPath (targetPath + "/build/" + configuration + "-iphoneos/" + appName + ".app")] );
 					}
 				}
 				else
@@ -400,8 +420,9 @@ class AppleBuildTool extends basis.BuildTool
 			}
 				//------------------------------------
 		}
-		catch(error:String)
+		catch(error:Dynamic)
 		{
+			trace("################################ Error ################################");
 			neko.Lib.println(error);
 		}
 	}

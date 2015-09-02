@@ -1,3 +1,5 @@
 /build
 .paths
 .project
+extension/ndll/iPhone
+npm-debug.log
