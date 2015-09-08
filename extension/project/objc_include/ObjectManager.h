@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 
 @protocol ObjectManagerDelegateProtocol
 -(void)objectBeingDestroyed:(id)object;

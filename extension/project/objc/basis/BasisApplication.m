@@ -1,5 +1,6 @@
 #import "BasisApplication.h"
 #include "BasisStart.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation BasisApplication
 

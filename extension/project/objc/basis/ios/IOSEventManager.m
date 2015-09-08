@@ -1,6 +1,7 @@
 #import "IOSEventManager.h"
 #import "ObjectManager.h"
 #import <objc/runtime.h>
+#import <QuartzCore/QuartzCore.h>
 
 
 @implementation IOSEventManager

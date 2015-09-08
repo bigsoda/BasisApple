@@ -102,7 +102,7 @@ class AppleBuildTool extends basis.BuildTool
 			FileUtil.createDirectory(xcodeBin);
 			FileUtil.createDirectory(xcodeAssets);
 				
-			
+			trace("------ Create haxe build file ------");
 			//------ Create haxe build file ------
 			var buildFile:FileOutput = File.write(targetPath + "/build.hxml");
 			buildFile.writeString("-cp haxe\n");
@@ -112,10 +112,12 @@ class AppleBuildTool extends basis.BuildTool
 			{
 				buildFile.writeString("-D ios\n");
 
-				if (deviceTarget.getSetting(AppleTarget.SIMULATOR) == "true")
+				if (deviceTarget.getSetting(AppleTarget.SIMULATOR) == "true") {
 					buildFile.writeString("-D HXCPP_ARMV7\n");
-				else
-					buildFile.writeString("-D HXCPP_ARM64\n");
+				} else {
+					//buildFile.writeString("-D HXCPP_ARM64\n");
+					buildFile.writeString("-D HXCPP_ARMV7\n");
+				}
 
 				buildFile.writeString("-D " + deviceTarget.getDeviceTypeCompilerArgument() + "\n");
 			}
@@ -128,6 +130,7 @@ class AppleBuildTool extends basis.BuildTool
 			}
 				
 			buildFile.writeString("-lib basisApple\n");
+
 			for(arg in haxeArgs)
 				buildFile.writeString(arg + "\n");
 				
@@ -170,6 +173,7 @@ class AppleBuildTool extends basis.BuildTool
 				throw("Error: main file not found: " + mainClass);
 			//------------------------------------
 			
+			trace("-------- Add asset paths -----------");
 			//-------- Add asset paths -----------
 			for(a in 0...assetPaths.length)
 			{
@@ -194,7 +198,7 @@ class AppleBuildTool extends basis.BuildTool
 			}
 			//------------------------------------
 			
-			
+			trace("-------- Main haxe class -----------");
 			//-------- Main haxe class -----------
 			var basisMainContent:String = File.getContent(libPath + "template/BasisMain.hx");
 			basisMainContent = StringTools.replace(basisMainContent, "MAIN_INCLUDE", mainClass);
@@ -203,11 +207,13 @@ class AppleBuildTool extends basis.BuildTool
 			fout.close();
 			//------------------------------------
 			
+			trace("------------ Build cpp -------------");
 			//------------ Build cpp -------------
 			ProcessUtil.runCommand(targetPath, "haxe", ["build.hxml"]);
 			FileUtil.createDirectory(xcodeBin + "/hxcpp/");
 			//------------------------------------
 			
+			trace("----------- Build Start ------------");
 			//----------- Build Start ------------
 			File.copy(libPath + "template/BuildBasisStart.xml" , targetPath + "/haxe/cpp/BuildBasisStart.xml");
 			var basisStartContent:String = File.getContent(libPath + "template/BasisStart.cpp");
@@ -225,7 +231,8 @@ class AppleBuildTool extends basis.BuildTool
 					args.push("-DHXCPP_ARMV7");
 				}else{
 					args.push("-Diphone");
-					args.push("-DHXCPP_ARM64");
+					//args.push("-DHXCPP_ARM64");
+					args.push("-DHXCPP_ARMV7");
 				}
 
 					
@@ -250,6 +257,7 @@ class AppleBuildTool extends basis.BuildTool
 			ProcessUtil.runCommand(targetPath + "/haxe/cpp", "haxelib", args);
 			//------------------------------------
 			
+			trace("------------ Copy Libs -------------");
 			//------------ Copy Libs -------------
 			if(osType == IOS_OS())
 			{
@@ -264,12 +272,16 @@ class AppleBuildTool extends basis.BuildTool
 				}
 				else
 				{
-					FileUtil.copyInto(haxeBuildPath + "cpp/obj/iphoneos-64/", xcodeBin);
+					//FileUtil.copyInto(haxeBuildPath + "cpp/obj/iphoneos-64/", xcodeBin);
+					FileUtil.copyInto(haxeBuildPath + "cpp/obj/iphoneos-v7/", xcodeBin);
+
 					File.copy(libPath + "bin/iPhone/libbasisapple.iphoneos-64.a" , xcodeBin + "/libbasisapple.iphoneos-64.a");
-					File.copy(libPath + "bin/iPhone/libbasisapple.iphoneos.a" , xcodeBin + "/libbasisapple.iphoneos.a");
-					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libregexp.iphoneos.a" , xcodeBin + "/hxcpp/libregexp.iphoneos.a");
-					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libstd.iphoneos.a" , xcodeBin + "/hxcpp/libstd.iphoneos.a");
-					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libzlib.iphoneos.a" , xcodeBin + "/hxcpp/libzlib.iphoneos.a");
+					File.copy(libPath + "bin/iPhone/libbasisapple.iphoneos-v7.a" , xcodeBin + "/libbasisapple.iphoneos-v7.a");
+
+					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libregexp.iphoneos-v7.a" , xcodeBin + "/hxcpp/libregexp.iphoneos-v7.a");
+					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libstd.iphoneos-v7.a" , xcodeBin + "/hxcpp/libstd.iphoneos-v7.a");
+					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libzlib.iphoneos-v7.a" , xcodeBin + "/hxcpp/libzlib.iphoneos-v7.a");
+
 					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libregexp.iphoneos-64.a" , xcodeBin + "/hxcpp/libregexp.iphoneos-64.a");
 					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libstd.iphoneos-64.a" , xcodeBin + "/hxcpp/libstd.iphoneos-64.a");
 					File.copy(FileUtil.getHaxelib("hxcpp") + "bin/iPhone/libzlib.iphoneos-64.a" , xcodeBin + "/hxcpp/libzlib.iphoneos-64.a");
@@ -286,6 +298,7 @@ class AppleBuildTool extends basis.BuildTool
 			}
 			//------------------------------------
 			
+			trace("---- Copy xcode project files ------");
 			//---- Copy xcode project files ------
 			FileUtil.createDirectory(xcodeFiles);
 			File.copy(libPath + "template/Main.mm", xcodeFiles + "/Main.mm");
@@ -320,7 +333,7 @@ class AppleBuildTool extends basis.BuildTool
 			}
 			//------------------------------------
 			
-			
+			trace("-------- Add Native Source ---------");
 			//-------- Add Native Source ---------
 			for(sourcePath in nativeSourcePaths)
 			{
@@ -328,6 +341,7 @@ class AppleBuildTool extends basis.BuildTool
 			}
 			//------------------------------------
 			
+			trace("-------- Create XCode Project -------");
 			//-------- Create XCode Project -------
 			var xcode:XCodeProject = new XCodeProject(appName, osType);
 			xcode.addSouce("Main.mm");
@@ -352,8 +366,12 @@ class AppleBuildTool extends basis.BuildTool
 				xcode.setBuildSetting("VALID_ARCHS", "i386");
 				xcode.setTargetSetting("VALID_ARCHS", "i386");
 			}else{
-				xcode.setBuildSetting("VALID_ARCHS", "arm64");
-				xcode.setTargetSetting("VALID_ARCHS", "arm64");				
+				//xcode.setBuildSetting("VALID_ARCHS", "arm64,armv7");
+				//xcode.setTargetSetting("VALID_ARCHS", "arm64,armv7");
+				//xcode.setBuildSetting("VALID_ARCHS", "arm64");
+				//xcode.setTargetSetting("VALID_ARCHS", "arm64");
+				xcode.setBuildSetting("VALID_ARCHS", "armv7");
+				xcode.setTargetSetting("VALID_ARCHS", "armv7");
 			}
 			
 			for(setting in deviceTarget.xcodeBuildSettings)
@@ -363,6 +381,7 @@ class AppleBuildTool extends basis.BuildTool
 			xcode.save(targetPath, true);
 			//------------------------------------
 			
+			trace("-------- Build Xcode Project -------");
 			//-------- Build Xcode Project -------
 			var commands = [ "-configuration", configuration ];
 			
@@ -374,7 +393,9 @@ class AppleBuildTool extends basis.BuildTool
 	            commands.push ("iphonesimulator");
 			} else {
 	            commands.push ("-arch");
-	            commands.push ("arm64");
+	            //commands.push ("arm64,armv7");
+	            //commands.push ("arm64");
+	            commands.push ("armv7");
 	            commands.push ("-sdk");
 	            commands.push ("iphoneos");
 			}
@@ -389,7 +410,7 @@ class AppleBuildTool extends basis.BuildTool
 			
 
 			
-
+			trace("-------- Run Xcode Project ---------");
 			//-------- Run Xcode Project ---------
 			if(deviceTarget.getSetting(Target.RUN_WHEN_FINISHED) == "true")
 			{

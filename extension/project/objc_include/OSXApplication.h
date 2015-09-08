@@ -3,6 +3,7 @@
 #import <Foundation/Foundation.h>
 #import "BasisApplication.h"
 #import "ObjectManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface OSXApplication : BasisApplication <ObjectManagerDelegateProtocol, NSApplicationDelegate>

@@ -2,6 +2,7 @@
 #include "BasisStart.h"
 #import "BasisApplication.h"
 #import "IOSEventManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation IOSApplication
 

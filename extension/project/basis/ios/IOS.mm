@@ -31,3 +31,5 @@
 #include "../../apple/quartzcore/CADisplayLinkCFFI.mm"
 
 #include "../../apple/foundation/NSAttributedStringCFFI.mm"
+
+#import <QuartzCore/QuartzCore.h>

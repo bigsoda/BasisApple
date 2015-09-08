@@ -2,6 +2,7 @@
 #import <UIKit/UIKit.h>
 #import "BasisApplication.h"
 #import "ObjectManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface IOSApplication : BasisApplication <ObjectManagerDelegateProtocol, UIApplicationDelegate>

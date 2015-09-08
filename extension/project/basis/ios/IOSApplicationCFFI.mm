@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "BasisApplication.h"
+#import <QuartzCore/QuartzCore.h>
 
 namespace basis
 {

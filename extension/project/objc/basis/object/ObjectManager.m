@@ -1,5 +1,6 @@
 #import "ObjectManager.h"
 #import <objc/runtime.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface ObjectManager()
 {
@@ -115,6 +116,7 @@ void (*_destroyHaxeObjectFunction)(id);
 **/
 -(id) callMethod:(id)object :(NSString *)selectorString :(NSArray *)args :(BOOL)isObject
 {
+	//NSLog(@"callMethod %@", selectorString);
 	SEL msel;
     NSMethodSignature *signature;
     NSInvocation *invocation;

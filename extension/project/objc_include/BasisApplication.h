@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "ObjectManager.h"
 #import "EventManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface BasisApplication : NSObject
 {

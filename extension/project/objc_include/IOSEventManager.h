@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "EventManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface IOSEventManager : EventManager
 

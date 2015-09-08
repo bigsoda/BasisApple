@@ -3,3 +3,13 @@
 .project
 extension/ndll/iPhone
 npm-debug.log
+
+*.a
+
+*.a
+
+extension/ndll/iPhone/libbasisapple.iphoneos-v7.a
+
+extension/ndll/iPhone/libbasisapple.iphoneos.a
+
+extension/ndll/iPhone/libbasisapple.iphonesim.a

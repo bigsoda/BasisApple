@@ -64,6 +64,7 @@ class NSData extends AbstractObject
 		return BasisApplication.instance.objectManager.callClassMethod("apple.foundation.NSData", "dataWithContentsOfMappedFile:", [path], [TypeValues.StringVal], TypeValues.ObjectVal);
 	}
 
+
 	//Properties
 
 	//Methods
@@ -150,6 +151,10 @@ class NSData extends AbstractObject
 	public function initWithContentsOfMappedFile( path:String):Dynamic
 	{
 		return BasisApplication.instance.objectManager.callInstanceMethod(this, "initWithContentsOfMappedFile:", [path], [TypeValues.StringVal], TypeValues.ObjectVal);
+	}
+	public function initWithBase64EncodedString( data:String, readOptionsMask:Int):Dynamic
+	{
+		return BasisApplication.instance.objectManager.callInstanceMethod(this, "initWithBase64EncodedString:options:", [data, readOptionsMask], [TypeValues.StringVal, TypeValues.IntVal], TypeValues.ObjectVal);
 	}
 
 
