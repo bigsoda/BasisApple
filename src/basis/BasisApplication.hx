@@ -1,5 +1,6 @@
 package basis;
 
+import basis.timer.TimerManager;
 import basis.object.ObjectManager;
 import basis.object.IObject;
 import cpp.Lib;
@@ -21,6 +22,7 @@ class BasisApplication
 	
 	public var objectManager(default, null):ObjectManager;
 	public var eventManager(default, null):EventManager;
+	public var timerManager(default, null):TimerManager;
 	
 	/**
 	*	Sets the application type. For example see IOSApplication
@@ -52,5 +54,6 @@ class BasisApplication
 	{
 		objectManager = new ObjectManager();
 		eventManager = new EventManager();
+		timerManager = new TimerManager();
 	}
 }

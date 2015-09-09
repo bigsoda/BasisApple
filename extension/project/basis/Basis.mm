@@ -16,6 +16,7 @@
 #endif
 
 #include "object/ObjectManagerCFFI.mm"
+#include "timer/TimerManagerCFFI.mm"
 #include "EventManagerCFFI.mm"
 #import "BasisStart.h"
 #import "../include/tools/Base64.h"

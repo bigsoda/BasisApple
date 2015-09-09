@@ -6,7 +6,7 @@
 
 void (*_startBasisHandler)();
 
-@synthesize objectManager, eventManager;
+@synthesize objectManager, eventManager, timerManager;
 
 BasisApplication *instance;
 
@@ -33,6 +33,11 @@ BasisApplication *instance;
 +(ObjectManager *) getObjectManager
 {
 	return instance.objectManager;
+}
+
++(TimerManager *) getTimerManager
+{
+	return instance.timerManager;
 }
 
 @end

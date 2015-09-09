@@ -18,7 +18,9 @@
 	
 	OSXEventManager* osxEventManager = [[OSXEventManager alloc] init];
 	self.eventManager = osxEventManager;
-   [BasisApplication callStartHandler];
+    [BasisApplication callStartHandler];
+
+    self.timerManager = [[TimerManager alloc] init];
 }
 
 

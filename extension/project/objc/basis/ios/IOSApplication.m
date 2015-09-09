@@ -178,6 +178,8 @@
 	[[NSNotificationCenter defaultCenter] addObserver:iosEventManager selector:@selector(onUIDeviceBatteryStateDidChangeNotification:) name:UIDeviceBatteryStateDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:iosEventManager selector:@selector(onUIDeviceOrientationDidChangeNotification:) name:UIDeviceOrientationDidChangeNotification object:nil];
  	[UIDevice.currentDevice beginGeneratingDeviceOrientationNotifications];
+
+ 	self.timerManager = [[TimerManager alloc] init];
 	
 	UIViewController  *c = [[UIViewController alloc] init];
    	self.controller = c;
